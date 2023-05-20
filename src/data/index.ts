@@ -487,7 +487,7 @@ export type Hotel = {
     url: string;
 };
 
-type Swipe = {
+export type Swipe = {
     id: string;
     direction: 'left' | 'right';
 };
@@ -552,7 +552,7 @@ export const getNextHotelIds = async (
     });
 };
 
-const getMatches = async (
+export const getMatches = async (
     currentSwipes: Swipe[],
     currentFriendSwipes: Swipe[],
 ): Promise<HotelID[]> => {

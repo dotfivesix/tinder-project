@@ -1,15 +1,16 @@
 "use client";
-import { getInitialHotelIds, hotelData } from "@/data";
+import { getInitialHotelIds, getNextHotelIds, hotelData } from "@/data";
 import { HotelCard } from "./hotel-card";
 import React, { useState, useMemo, useRef, useLayoutEffect, useEffect } from 'react'
 import { AiOutlineCheck, AiOutlineUndo, AiOutlineClose } from "react-icons/ai";
 import { swipes } from "@/data";
 import TinderCard from "../modules/react-tinder";
+import MatchesView from "./matches-view";
 
-function SwipeView({ hotelIDs }:{hotelIDs : string[]} ) {
+function SwipeView({ data, currentIndex, setCurrentIndex }:{data : string[], currentIndex:number, setCurrentIndex:any} ) {
 
-    const [currentIndex, setCurrentIndex] = useState(hotelIDs.length - 1)
-    const [lastDirection, setLastDirection] = useState()
+    const [hotelIDs, setHotelIDs] = useState(data);
+    const [lastDirection, setLastDirection] = useState();
 
     const currentIndexRef = useRef(currentIndex);
 
@@ -34,7 +35,6 @@ function SwipeView({ hotelIDs }:{hotelIDs : string[]} ) {
         setLastDirection(direction);
         updateCurrentIndex(index - 1);
         swipes.push({ direction, id });
-        console.log(swipes);
     }
 
     const outOfFrame = (name: any, idx: any) => {
@@ -59,6 +59,17 @@ function SwipeView({ hotelIDs }:{hotelIDs : string[]} ) {
     }
 
     const btnStyle = 'w-10 h-10 border-black border rounded-full flex justify-center items-center text-xl bg-white';
+
+    useEffect(() => {
+        if (typeof currentIndex === 'number' && swipes.length % hotelIDs.length === 0) getNextHotelIds(swipes, hotelIDs).then(nextIDs => {
+            setHotelIDs(nextIDs);
+            setCurrentIndex(nextIDs.length - 1);
+        });
+    }, [currentIndex]);
+
+    if (swipes.length >= 6 && swipes.filter(swipe => swipe.direction === 'right').length >= 2) return (
+        <MatchesView />
+    );
 
     return (
         <div className="p-4 w-full overflow-x-clip">
@@ -101,13 +112,15 @@ function SwipeView({ hotelIDs }:{hotelIDs : string[]} ) {
 export default function SwipeViewContainer()
 {
     const [hotelIDs, setHotelIDs] = useState<null|string[]>(null);
+    const [currentIndex, setCurrentIndex] = useState<number|null>(null);
 
-    useLayoutEffect(() => {
-        getInitialHotelIds().then(res => {
-            setHotelIDs(res);
+    useEffect(() => {
+        getInitialHotelIds().then(initialIDs => {
+            setHotelIDs(initialIDs);
+            setCurrentIndex(initialIDs.length - 1);
         });
     }, []);
 
-    if (hotelIDs) return <SwipeView {...{hotelIDs}} />;
+    if (hotelIDs && (typeof currentIndex === 'number')) return <SwipeView {...{data:hotelIDs, currentIndex, setCurrentIndex}} />;
     else return <></>;
 }
