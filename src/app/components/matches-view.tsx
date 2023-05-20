@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { Swipe, getMatches, hotelData, swipes } from "../../data";
 import { HotelCard } from "./hotel-card";
-import Home from "../page";
-import Header from "./header";
 import SwipeViewContainer from "./swipe-view";
 import ShareModal from "./share-modal";
 import { Query } from "../types";

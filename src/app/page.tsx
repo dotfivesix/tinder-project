@@ -1,7 +1,4 @@
-import { useEffect } from "react";
 "use client";
-import Header from "./components/header";
-import SwipeViewContainer from "./components/swipe-view";
 import { useSearchParams } from "next/navigation";
 import { hotelData } from "@/data";
 import Home from "./components/Home";

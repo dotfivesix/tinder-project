@@ -39,7 +39,8 @@ export default function ShareModal
 
   const generateLink = () => {
     setMessage({style: '', text: ''});
-    const domain = 'http://localhost:3000';
+    console.log(process.env.DOMAIN)
+    const domain = process.env.NEXT_PUBLIC_DOMAIN ?? 'http://localhost:3000';
     const validatedUsername = isValidUsername(name);
     if (!validatedUsername) { setMessage({style: 'text-red-500', text: 'Invalid Username !'}); return; }
     const swipesToString = (dir:string):string => swipes.filter(swipe => swipe.direction === dir).map(swipe => swipe.id).join('+');
