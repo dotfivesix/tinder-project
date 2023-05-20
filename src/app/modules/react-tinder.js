@@ -2,9 +2,6 @@
 const React = require('react')
 const { useSpring, animated } = require('@react-spring/web')
 
-const height = window.innerHeight
-const width = window.innerWidth
-
 const settings = {
   maxTilt: 25, // in deg
   rotationPower: 50,
@@ -36,7 +33,7 @@ const normalize = (vector) => {
   return { x: vector.x / length, y: vector.y / length }
 }
 
-const animateOut = async (gesture, setSpringTarget) => {
+const animateOut = async (gesture, setSpringTarget, height, width) => {
   const diagonal = pythagoras(height, width)
   const velocity = pythagoras(gesture.x, gesture.y)
   const finalX = diagonal * gesture.x
@@ -86,7 +83,7 @@ const AnimatedDiv = animated.div
 
 const TinderCard = React.forwardRef(
   (
-    { flickOnSwipe = true, children, onSwipe, onCardLeftScreen, className, preventSwipe = [], swipeRequirementType = 'velocity', swipeThreshold = settings.swipeThreshold, onSwipeRequirementFulfilled, onSwipeRequirementUnfulfilled },
+    { flickOnSwipe = true, children, onSwipe, onCardLeftScreen, className, preventSwipe = [], swipeRequirementType = 'velocity', swipeThreshold = settings.swipeThreshold, onSwipeRequirementFulfilled, onSwipeRequirementUnfulfilled, height, width },
     ref
   ) => {
     const [{ xyrot }, setSpringTarget] = useSpring(() => ({
@@ -102,13 +99,13 @@ const TinderCard = React.forwardRef(
         const power = 1.3
         const disturbance = (Math.random() - 0.5) / 2
         if (dir === 'right') {
-          await animateOut({ x: power, y: disturbance }, setSpringTarget)
+          await animateOut({ x: power, y: disturbance }, setSpringTarget, height, width)
         } else if (dir === 'left') {
-          await animateOut({ x: -power, y: disturbance }, setSpringTarget)
+          await animateOut({ x: -power, y: disturbance }, setSpringTarget, height, width)
         } else if (dir === 'up') {
-          await animateOut({ x: disturbance, y: power }, setSpringTarget)
+          await animateOut({ x: disturbance, y: power }, setSpringTarget, height, width)
         } else if (dir === 'down') {
-          await animateOut({ x: disturbance, y: -power }, setSpringTarget)
+          await animateOut({ x: disturbance, y: -power }, setSpringTarget, height, width)
         }
         if (onCardLeftScreen) onCardLeftScreen(dir)
       },
@@ -135,7 +132,7 @@ const TinderCard = React.forwardRef(
                 y: gesture.vy
               }) : (
                 normalize({ x: gesture.dx, y: gesture.dy }) // Normalize to avoid flicking the card away with super fast speed only direction is wanted here
-              ), setSpringTarget, swipeRequirementType)
+              ), setSpringTarget, height, width)
               if (onCardLeftScreen) onCardLeftScreen(dir)
               return
             }

@@ -73,6 +73,8 @@ function SwipeView({ hotelIDs }:{hotelIDs : string[]} ) {
                             key={hotelID}
                             onSwipe={(dir:any) => swiped(dir, hotelID, index)}
                             onCardLeftScreen={() => outOfFrame(hotelID, index)}
+                            height={innerHeight}
+                            width={innerWidth}
                         >
                             <HotelCard data={hotelData[hotelID]} />
                         </TinderCard>
