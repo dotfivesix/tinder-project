@@ -6,8 +6,9 @@ import { AiOutlineCheck, AiOutlineUndo, AiOutlineClose } from "react-icons/ai";
 import { swipes } from "@/data";
 import TinderCard from "../modules/react-tinder";
 import MatchesView from "./matches-view";
+import { Query } from "../types";
 
-function SwipeView({ data, currentIndex, setCurrentIndex }:{data : string[], currentIndex:number, setCurrentIndex:any} ) {
+function SwipeView({ data, currentIndex, setCurrentIndex, query }:{data : string[], currentIndex:number, setCurrentIndex:any, query:Query} ) {
 
     const [hotelIDs, setHotelIDs] = useState(data);
     const [lastDirection, setLastDirection] = useState();
@@ -68,7 +69,7 @@ function SwipeView({ data, currentIndex, setCurrentIndex }:{data : string[], cur
     }, [currentIndex]);
 
     if (swipes.length >= 6 && swipes.filter(swipe => swipe.direction === 'right').length >= 2) return (
-        <MatchesView />
+        <MatchesView {...{query}} />
     );
 
     return (
@@ -92,28 +93,29 @@ function SwipeView({ data, currentIndex, setCurrentIndex }:{data : string[], cur
                     )
                 })}
             </div>
-            <div className='absolute left-0 bottom-4 w-full flex justify-center gap-4'>
-                <button className={btnStyle} onClick={() => goBack()}>
-                    <AiOutlineUndo />
-                </button>
-                <button className={btnStyle} onClick={() => swipe('left')}>
-                    <AiOutlineClose />
-                </button>
-                <button className={btnStyle} onClick={() => swipe('right')}>
-                    <AiOutlineCheck />
-                </button>
+            <div className="absolute left-0 bottom-4 w-full flex flex-col items-center gap-4">
+                {query ? <span className="font-medium">Matching with {query.name}</span> : ''}
+                <div className='flex justify-center gap-4'>
+                    <button className={btnStyle} onClick={() => goBack()}>
+                        <AiOutlineUndo />
+                    </button>
+                    <button className={btnStyle} onClick={() => swipe('left')}>
+                        <AiOutlineClose />
+                    </button>
+                    <button className={btnStyle} onClick={() => swipe('right')}>
+                        <AiOutlineCheck />
+                    </button>
+                </div>
             </div>
-
         </div>
     )
 
 }
 
-export default function SwipeViewContainer()
+export default function SwipeViewContainer({ query }:{ query:Query })
 {
     const [hotelIDs, setHotelIDs] = useState<null|string[]>(null);
     const [currentIndex, setCurrentIndex] = useState<number|null>(null);
-
     useEffect(() => {
         getInitialHotelIds().then(initialIDs => {
             setHotelIDs(initialIDs);
@@ -121,6 +123,6 @@ export default function SwipeViewContainer()
         });
     }, []);
 
-    if (hotelIDs && (typeof currentIndex === 'number')) return <SwipeView {...{data:hotelIDs, currentIndex, setCurrentIndex}} />;
+    if (hotelIDs && (typeof currentIndex === 'number')) return <SwipeView {...{data:hotelIDs, currentIndex, setCurrentIndex, query}} />;
     else return <></>;
 }

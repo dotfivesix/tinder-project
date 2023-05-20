@@ -43,10 +43,10 @@ export default function ShareModal
     const validatedUsername = isValidUsername(name);
     if (!validatedUsername) { setMessage({style: 'text-red-500', text: 'Invalid Username !'}); return; }
     const swipesToString = (dir:string):string => swipes.filter(swipe => swipe.direction === dir).map(swipe => swipe.id).join('+');
-    const newLink = `${domain}/?name=${validatedUsername}?left=${swipesToString('left')}?right=${swipesToString('right')}`;
+    const newLink = `${domain}/?name=${validatedUsername}&left=${swipesToString('left')}&right=${swipesToString('right')}`;
     setLink(newLink);
     navigator.clipboard.writeText(newLink).then(() => {
-      setMessage({style:'text-green-500', text: 'Link Copied To Clipboard !'});
+      setMessage({style:'text-green-500', text: 'Copied! Now send it to your friend!'});
     })
   }
 
