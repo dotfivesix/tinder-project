@@ -493,10 +493,10 @@ type Swipe = {
 };
 
 // A list of IDs that have been swiped and the direction
-let swipes: Swipe[] = [];
+export let swipes: Swipe[] = [];
 
 // A list of hotel IDs that have been queued for display
-let queue: HotelID[] = [];
+export let queue: HotelID[] = [];
 
 let friendName = '';
 let friendSwipes: Swipe[] = [];
@@ -540,7 +540,7 @@ export const getInitialHotelIds = async (): Promise<HotelID[]> => {
     });
 };
 
-const getNextHotelIds = async (
+export const getNextHotelIds = async (
     currentSwipes: Swipe[],
     currentQueue: HotelID[],
 ): Promise<HotelID[]> => {
