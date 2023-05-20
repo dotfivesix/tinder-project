@@ -16,8 +16,7 @@ export default function Index() {
     arr.forEach(id => {
       if (id in hotelData) newArr.push(id);
     });
-    if (newArr.length === arr.length) return true;
-    else return false;
+    return newArr.length === arr.length;
   }
 
   if (name && left && right)
