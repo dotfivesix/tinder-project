@@ -4,7 +4,7 @@ import { Inter } from 'next/font/google'
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'Tinder App',
+  title: 'Luxury Escapes',
   description: 'Tinder App',
 }
 
@@ -15,7 +15,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <head>
+        <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+      </head>
+      <body className={inter.className + ' bg-gray-200'}>{children}</body>
     </html>
   )
 }

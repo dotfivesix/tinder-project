@@ -1,7 +1,13 @@
+import Header from "./components/header";
+import SwipeView from "./components/swipe-view";
+
 export default function Index() {
   return (
-    <main>
-      Hello World
-    </main>
+    <>
+      <Header />
+      <main>
+        <SwipeView />
+      </main>
+    </>
   )
 }
