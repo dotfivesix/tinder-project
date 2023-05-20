@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.custom-tinder-card {
+  touch-action: pan-x;
+  /* Disable vertical touch gestures */
+  -webkit-touch-callout: none;
+  /* Disable long-press context menu on iOS */
+  -webkit-user-select: none;
+  /* Disable text selection on iOS */
+  user-select: none;
+  /* Disable text selection on other platforms */
+}
