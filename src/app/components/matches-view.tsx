@@ -4,10 +4,13 @@ import { HotelCard } from "./hotel-card";
 import Home from "../page";
 import Header from "./header";
 import SwipeViewContainer from "./swipe-view";
+import ShareModal from "./share-modal";
 
 export default function MatchesView() {
+
     const [hotelIDs, setHotelIDs] = useState<null | string[]>(null);
     const [restart, setRestart] = useState(false);
+    const [share, setShare] = useState(false);
 
     useEffect(() => {
         getMatches(swipes, []).then(res => {
@@ -32,10 +35,10 @@ export default function MatchesView() {
                 ))}
             </div>
             <div className="flex flex-col gap-4">
-                <button className={btnStyle}>Share</button>
+                <button className={btnStyle} onClick={() => setShare(true)}>Share</button>
                 <button className={btnStyle} onClick={() => setRestart(true)}>Restart</button>
             </div>
-
+            {share ? <ShareModal setSelection={setShare} /> : ''}
         </div>
 
     );
