@@ -2,9 +2,9 @@
 import { getInitialHotelIds, hotelData } from "@/data";
 import { HotelCard } from "./hotel-card";
 import React, { useState, useMemo, useRef, useLayoutEffect, useEffect } from 'react'
-import TinderCard from 'react-tinder-card';
 import { AiOutlineCheck, AiOutlineUndo, AiOutlineClose } from "react-icons/ai";
 import { swipes } from "@/data";
+import TinderCard from "../modules/react-tinder";
 
 function SwipeView({ hotelIDs }:{hotelIDs : string[]} ) {
 
@@ -33,8 +33,7 @@ function SwipeView({ hotelIDs }:{hotelIDs : string[]} ) {
     const swiped = (direction: any, id: any, index: any) => {
         setLastDirection(direction);
         updateCurrentIndex(index - 1);
-        console.log("Swiped !", direction, id, index);
-        if (!swipes.filter(swipe => swipe.id === id).length) swipes.push({ direction, id });
+        swipes.push({ direction, id });
         console.log(swipes);
     }
 
@@ -66,12 +65,13 @@ function SwipeView({ hotelIDs }:{hotelIDs : string[]} ) {
             <div className='relative'>
                 {hotelIDs.map((hotelID, index) => {
                     return (
+                        // @ts-ignore
                         <TinderCard
                             // @ts-ignore
                             ref={childRefs[index]}
                             className='absolute'
                             key={hotelID}
-                            onSwipe={(dir) => swiped(dir, hotelID, index)}
+                            onSwipe={(dir:any) => swiped(dir, hotelID, index)}
                             onCardLeftScreen={() => outOfFrame(hotelID, index)}
                         >
                             <HotelCard data={hotelData[hotelID]} />
